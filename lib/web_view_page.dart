@@ -33,13 +33,13 @@ class _WebViewPageState extends State<WebViewPage> {
     });
   }
 
-  bool isExit = false;
+  bool _isExit = false;
 
-  int lastTime = 0;
+  int _lastTime = 0;
 
   Future<bool> _onWillPop() {
-    if (isExit) {
-      if (DateTime.now().millisecond - lastTime < 2 * 1000) {
+    if (_isExit) {
+      if (DateTime.now().millisecond - _lastTime < 2 * 1000) {
         return Future.value(true);
       }
       return Future.value(false);
@@ -49,10 +49,10 @@ class _WebViewPageState extends State<WebViewPage> {
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.CENTER,
       );
-      lastTime = DateTime.now().millisecond;
-      isExit = true;
+      _lastTime = DateTime.now().millisecond;
+      _isExit = true;
       Future.delayed(Duration(seconds: 2)).then((_) {
-        isExit = false;
+        _isExit = false;
       });
       return Future.value(false);
     }
@@ -98,8 +98,10 @@ class _WebViewPageState extends State<WebViewPage> {
             textAlign: TextAlign.right,
           ),
           centerTitle: true,
-          leading:
-              GestureDetector(child: Icon(Icons.arrow_back), onTap: onBack),
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: onBack,
+          ),
         ),
         body: WillPopScope(
           child: WebviewScaffold(
